@@ -76,7 +76,10 @@ ThreadWork* ThreadPool::GetFreeThreadWork(){
         m_FreeMutex.unlock();       //在CreateFreetThread会上这把锁
         CreateFreeThread(m_MinFreeSize - m_FreeVector.size());
     }
-    m_FreeMutex.unlock();
+	else{
+		m_FreeMutex.unlock();
+	}
+    
 
     {
     unique_lock<mutex> lck(m_FreeMutex);
