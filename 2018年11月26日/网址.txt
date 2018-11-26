@@ -1,0 +1,10 @@
+http://www.arm9home.net/read.php?tid-81833.html
+flytortoise
+zyzy1996
+
+
+
+AMBA协议（高级处理器总线协议）：
+    AHB：主要用于高性能模块(如CPU、DMA和DSP等)之间的连接。AHB 系统由主模块、从模块和基础结构(Infrastructure)3部分组成，整个AHB总线上的传输都由主模块发出，由从模块负责回应。
+    ASB:Advanced System Bus,考虑功耗，是AHB的一种代替方案
+    APB:主要用于低带宽的周边外设之间的连接，例如UART、1284等，它的总线架构不像 AHB支持多个主模块，在APB里面唯一的主模块就是APB 桥。
