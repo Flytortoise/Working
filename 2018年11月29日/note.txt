@@ -1,0 +1,1 @@
+使用分别mingw32-make -f Makefile.Debug和mingw32-make -f Makefile.Release生成Debug版和Release版的可执行文件。编译命令和结果文件如图所示。
