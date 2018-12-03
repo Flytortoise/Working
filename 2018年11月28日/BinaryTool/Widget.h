@@ -8,6 +8,7 @@
 
 #include "def.h"
 #include "MyPushButton.h"
+#include "MyLineEdit.h"
 
 class Widget : public QWidget
 {
@@ -22,6 +23,7 @@ public slots:
    void ChangeDate(int);
    void ClearZero();
    void Negation();     //取反
+   void ChangeLineData(unsigned int);
 
 private:
     void CreateInit();
@@ -37,19 +39,19 @@ private:
 
     //输出二进制
     QLabel *m_OutBinLabel;
-    QLineEdit *m_OutBinLineEdit;
+    MyLineEdit *m_OutBinLineEdit;
 
     //输出十进制
     QLabel  *m_OutDecLabel;
-    QLineEdit *m_OutDecLineEdit;
+    MyLineEdit *m_OutDecLineEdit;
 
     //输出八进制
     QLabel *m_OutOctLabel;
-    QLineEdit *m_OutOctLineEdit;
+    MyLineEdit *m_OutOctLineEdit;
 
     //输出十六进制
     QLabel *m_OutHexLabel;
-    QLineEdit *m_OutHexLineEdit;
+    MyLineEdit *m_OutHexLineEdit;
 
     QString m_string;
     unsigned int m_data;

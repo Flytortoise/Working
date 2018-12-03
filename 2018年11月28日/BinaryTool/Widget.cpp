@@ -3,6 +3,14 @@
 #include <QHBoxLayout>
 #include <QDebug>
 
+void SwapQString(QString &str){
+    int size = str.size();
+    for(int i = 0; i < size / 2; i++){
+        QChar tmp = str[i];
+        str[i] = str[size-i-1];
+        str[size-i-1] = tmp;
+    }
+}
 
 
 Widget::Widget(QWidget *parent)
@@ -46,20 +54,28 @@ void Widget::CreateInit(){
 
     m_OutBinLabel = new QLabel(tr("二进制："));
     m_OutBinLabel->setAlignment(Qt::AlignRight);
-    m_OutBinLineEdit = new QLineEdit(m_string.sprintf("%s",m_NumState));
+    m_OutBinLineEdit = new MyLineEdit(m_string.sprintf("%s",m_NumState));
+    m_OutBinLineEdit->SetIndex(MyLineEdit::BIN);
+    connect(m_OutBinLineEdit, SIGNAL(MyTextEdited(unsigned int)), this, SLOT(ChangeLineData(unsigned int)));
 
     m_OutDecLabel = new QLabel(tr("十进制："));
     m_OutDecLabel->setAlignment(Qt::AlignRight);
-    m_OutDecLineEdit = new QLineEdit(m_string.sprintf("%u",m_data));
+    m_OutDecLineEdit = new MyLineEdit(m_string.sprintf("%u",m_data));
+    m_OutDecLineEdit->SetIndex(MyLineEdit::DEC);
+    connect(m_OutDecLineEdit, SIGNAL(MyTextEdited(unsigned int)), this, SLOT(ChangeLineData(unsigned int)));
 
     m_OutOctLabel = new QLabel(tr("八进制："));
     m_OutOctLabel->setAlignment(Qt::AlignRight);
-    m_OutOctLineEdit = new QLineEdit(m_string.sprintf("0%o",m_data));
+    m_OutOctLineEdit = new MyLineEdit(m_string.sprintf("0%o",m_data));
+    m_OutOctLineEdit->SetIndex(MyLineEdit::OCT);
+    connect(m_OutOctLineEdit, SIGNAL(MyTextEdited(unsigned int)), this, SLOT(ChangeLineData(unsigned int)));
 
 
     m_OutHexLabel = new QLabel(tr("十六进制："));
     m_OutHexLabel->setAlignment(Qt::AlignRight);
-    m_OutHexLineEdit = new QLineEdit(m_string.sprintf("0x%x",m_data));
+    m_OutHexLineEdit = new MyLineEdit(m_string.sprintf("0x%x",m_data));
+    m_OutHexLineEdit->SetIndex(MyLineEdit::HEX);
+    connect(m_OutHexLineEdit, SIGNAL(MyTextEdited(unsigned int)), this, SLOT(ChangeLineData(unsigned int)));
 
 }
 
@@ -109,27 +125,17 @@ void Widget::ChangeDate(int index){
 
     if(m_NumState[index] == '0'){
         m_NumState[index] = '1';
+        m_data|= (1 << index);
     }
     else{
         m_NumState[index] = '0';
+        m_data &= ~(1 << index);
     }
 
     m_NumPushButton[index]->setText(m_string.sprintf("%c",m_NumState[index]));
 
-    m_data = 0;
-    for(int i = 31; i >= 0; i--){
-        m_data <<= 1;
-        if(m_NumState[i] == '1')
-            m_data |= 0x01;
-    }
-
     m_string.sprintf("%s",m_NumState);
-    int size = m_string.size();
-    for(int i = 0; i < size / 2; i++){
-        QChar tmp = m_string[i];
-        m_string[i] = m_string[size-i-1];
-        m_string[size-i-1] = tmp;
-    }
+    SwapQString(m_string);
 
     OutShow();
 
@@ -160,33 +166,37 @@ void Widget::Negation(){
     for(int i = 0; i < MAXSIZE; i++){
         if(m_NumState[i] == '1'){
             m_NumState[i] = '0';
+            m_data &= ~(1 << i);
         }
         else{
             m_NumState[i] = '1';
+            m_data |= (1 << i);
         }
 
         m_NumPushButton[i]->setText(m_string.sprintf("%c",m_NumState[i]));
     }
 
-    m_data = 0;
-    for(int i = 31; i >= 0; i--){
-        m_data <<= 1;
-        if(m_NumState[i] == '1')
-            m_data |= 0x01;
-    }
-
     m_string.sprintf("%s",m_NumState);
-    int size = m_string.size();
-    for(int i = 0; i < size / 2; i++){
-        QChar tmp = m_string[i];
-        m_string[i] = m_string[size-i-1];
-        m_string[size-i-1] = tmp;
-    }
-
+    SwapQString(m_string);
     OutShow();
 }
 
 
+void Widget::ChangeLineData(unsigned int data){
+    m_data = data;
+    for(int i = 0; i < MAXSIZE; i++){
+        m_NumState[i] = (data & 0x01) + '0';
+        m_NumPushButton[i]->setText(QString(m_NumState[i]));
+
+        data >>= 1;
+    }
+
+    //qDebug() << m_data;
+
+    m_string.sprintf("%s",m_NumState);
+    SwapQString(m_string);
+    OutShow();
+}
 
 
 
