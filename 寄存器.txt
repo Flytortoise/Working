@@ -1,0 +1,12 @@
+CS : "Code Segment"，翻译为"代码段寄存器"，对应于内存中的存放代码的内存区域，用来存放内存代码段区域的入口地址（段基址）。
+IP : "Instruction Pointer"，翻译为"指令指针寄存器"，即偏移地址
+在CPU执行指令时，通过代码段寄存器（CS）和指令指针寄存器（IP）来确定要执行的下一条指令的内存地址。
+
+DS : Data Segment 的缩写，翻译为“数据段寄存器”
+ES : Extra Segment 的缩写，翻译为“附加段寄存器”，扩展段寄存器
+FS : Flag segment 标志段寄存器
+GS : Global segment 全局段寄存器
+SS : Stack Segment 的缩写，翻译为“堆栈段寄存器”
+PC : program counter，用于存放下一条指令地址的寄存器
+SP : 堆栈寄存器，PUSH和POP指令是从SP寄存器得到现行堆栈段的段内偏移量，所以称SP寄存器为堆栈指针，SP始终指向栈顶。
+LR : Link Register，连接寄存器，一是用来保存子程序返回地址；二是当异常发生时，LR中保存的值等于异常发生时PC的值减4（或者减2），因此在各种异常模式下可以根据LR的值返回到异常发生前的相应位置继续执行。
